@@ -1,10 +1,17 @@
 aid: ansa-biotechnologies
 name: Ansa Biotechnologies
-description: 'Ansa Biotechnologies is a company surfaced via the API Evangelist harvest backlog (source:
-  secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: 'Ansa Biotechnologies is a synthetic DNA manufacturer headquartered in Emeryville,
+  California, founded in 2017 as a UC Berkeley spinout. Its enzymatic DNA synthesis platform is
+  built on TdT-dNTP conjugates — enzymatic reagents that add single bases to a growing DNA molecule
+  — and is sold as a made-to-order laboratory service producing sequence-verified double-stranded
+  DNA fragments up to 600 bp, clonal DNA up to 7.5 kb, and ultra-long clonal constructs up to 50 kb.
+  Quotes and orders are placed through a Salesforce Experience Cloud customer portal at
+  portal.ansabio.com. Ansa is a wet-lab manufacturer rather than a software company: it publishes
+  no public API, developer portal, SDK, or machine-readable specification.'
 url: https://raw.githubusercontent.com/api-evangelist/ansa-biotechnologies/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
+x-source-url: https://forgeglobal.com/ansa-biotechnologies_stock/
 x-tier: stub
 x-tier-reason: harvest
 specificationVersion: '0.20'
@@ -12,6 +19,12 @@ created: '2026-08-06'
 modified: '2026-08-06'
 tags:
 - Company
+- Biotechnology
+- Synthetic Biology
+- DNA Synthesis
+- Gene Synthesis
+- Life Sciences
+- Laboratory Services
 apis: []
 maintainers:
 - FN: Kin Lane
@@ -19,5 +32,43 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/ansa-biotechnologies-domain-security.yml
 - type: Website
-  url: https://forgeglobal.com/ansa-biotechnologies_stock/
+  url: https://ansabio.com/
+- type: Blog
+  url: https://ansabio.com/topic/blog/
+- type: Support
+  url: https://ansabio.com/customer-support/
+- type: Login
+  url: https://portal.ansabio.com/
+- type: TermsOfService
+  url: https://ansabio.com/terms-and-conditions/
+- type: PrivacyPolicy
+  url: https://ansabio.com/privacy-policy/
+x-enrichment:
+  date: '2026-08-06'
+  status: minimal
+  artifacts_added: 2
+  pass: local-v1
+x-coverage:
+  state: none
+  reason: no-developer-program
+  detail: >-
+    Ansa sells wet-lab DNA synthesis, not software — ordering runs through a Salesforce
+    Experience Cloud customer portal (portal.ansabio.com) whose every path, real or not,
+    returns the same login HTML, and the corporate site answers every probe including
+    /robots.txt with a SiteGround sgcaptcha challenge; no API, spec, SDK, package or
+    GitHub org exists on any host or registry.
+  evidence:
+  - url: https://ansabio.my.site.com/openapi.json
+    status: 404
+  - url: https://ansabio.my.site.com/.well-known/agent-card.json
+    status: 404
+  - url: https://portal.ansabio.com/openapi.json
+    status: 200
+  - url: https://ansabio.com/llms.txt
+    status: 202
+  - url: https://api.github.com/orgs/ansabio
+    status: 404
+  checked: '2026-08-06'

@@ -1,0 +1,134 @@
+generated: '2026-08-06'
+method: probed
+source: live HTTP probes of every Ansa Biotechnologies host (2026-08-06)
+summary: >-
+  No Ansa-authored .well-known document was found on any host. The corporate site
+  (ansabio.com) answers every path — including /robots.txt and /llms.txt — with a
+  SiteGround "sgcaptcha" bot-challenge interstitial (HTTP 202, ~170 bytes, header
+  `sg-captcha: challenge`), so nothing there could be read. The customer portal
+  (portal.ansabio.com) is a Salesforce Experience Cloud site that 302s every path to
+  its login page. The one JSON 200 found — the OIDC discovery document on the
+  Salesforce tenant — is Salesforce platform boilerplate served identically on every
+  Experience Cloud tenant, not something Ansa published, so it is recorded here as
+  evidence but is deliberately NOT wired as a scored WellKnown pointer.
+hosts:
+- host: ansabio.com
+  note: >-
+    SiteGround sgcaptcha bot challenge on every path. HTTP 202 with a meta-refresh to
+    /.well-known/sgcaptcha/ and header `sg-captcha: challenge`. Not a real response body.
+  probes:
+  - path: /.well-known/security.txt
+    status: 202
+    result: bot-challenge
+  - path: /.well-known/openid-configuration
+    status: 202
+    result: bot-challenge
+  - path: /.well-known/oauth-authorization-server
+    status: 202
+    result: bot-challenge
+  - path: /.well-known/api-catalog
+    status: 202
+    result: bot-challenge
+  - path: /.well-known/ai-plugin.json
+    status: 202
+    result: bot-challenge
+  - path: /.well-known/agent-card.json
+    status: 202
+    result: bot-challenge
+  - path: /.well-known/agent.json
+    status: 202
+    result: bot-challenge
+  - path: /llms.txt
+    status: 202
+    result: bot-challenge
+  - path: /robots.txt
+    status: 202
+    result: bot-challenge
+- host: portal.ansabio.com
+  note: >-
+    Vanity CNAME onto the Salesforce Experience Cloud tenant. EVERY path — including
+    ones that do not exist — redirects to the portal login and returns the same 92,326-byte
+    HTML login page. This is the classic SPA/portal catch-all false positive; no path here
+    is evidence of an artifact.
+  probes:
+  - path: /.well-known/agent-card.json
+    status: 200
+    result: login-catch-all (HTML, not an AgentCard)
+  - path: /.well-known/agent.json
+    status: 200
+    result: login-catch-all (HTML, not an AgentCard)
+  - path: /.well-known/security.txt
+    status: 200
+    result: login-catch-all (HTML)
+  - path: /.well-known/openid-configuration
+    status: 200
+    result: login-catch-all (HTML)
+  - path: /openapi.json
+    status: 200
+    result: login-catch-all (HTML)
+  - path: /graphql
+    status: 200
+    result: login-catch-all (HTML)
+  - path: /llms.txt
+    status: 200
+    result: login-catch-all (HTML)
+- host: ansabio.my.site.com
+  note: >-
+    The Salesforce Experience Cloud origin behind portal.ansabio.com. Serves real 404s,
+    so probes here are meaningful. Two 200s, both Salesforce platform endpoints.
+  probes:
+  - path: /.well-known/security.txt
+    status: 404
+    result: not-found
+  - path: /.well-known/agent-card.json
+    status: 404
+    result: not-found
+  - path: /.well-known/agent.json
+    status: 404
+    result: not-found
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    result: not-found
+  - path: /.well-known/api-catalog
+    status: 404
+    result: not-found
+  - path: /openapi.json
+    status: 404
+    result: not-found
+  - path: /llms.txt
+    status: 404
+    result: not-found
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    result: salesforce-platform-boilerplate
+    vendor_boilerplate: true
+    control_diff: >-
+      Byte-for-byte the same document (modulo the issuer host) is served at
+      https://trailhead.my.site.com/.well-known/openid-configuration (HTTP 200, 2339 bytes)
+      — an unrelated Salesforce tenant. The scopes list (cdp_api, pardot_api, wave_api,
+      einstein_gpt_api, chatter_api …) is the standard Salesforce OAuth scope set, not
+      an Ansa API's scopes.
+  - path: /services/data/
+    status: 200
+    content_type: application/json
+    result: salesforce-platform-boilerplate
+    vendor_boilerplate: true
+    control_diff: >-
+      The Salesforce REST API version list (v31.0 …), present on every Salesforce org.
+      It is Salesforce's API surface on Ansa's tenant, not an API Ansa publishes.
+findings:
+  ansa_authored_well_known: 0
+  security_txt: false
+  api_catalog: false
+  agent_card: false
+  openid_configuration: vendor-boilerplate-only
+pointers_wired: []
+pointers_withheld:
+- type: WellKnown
+  reason: >-
+    The only .well-known 200 is Salesforce Experience Cloud boilerplate, confirmed by a
+    control probe against an unrelated tenant. Wiring it would credit Ansa with a
+    discovery surface it did not author.
+- type: SecurityTxt
+  reason: No security.txt exists on any host (404 on the origin, bot-challenged on ansabio.com).

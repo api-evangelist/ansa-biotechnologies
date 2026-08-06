@@ -42,5 +42,9 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Ansa Biotechnologies is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/ansa-biotechnologies_stock/
+Ansa Biotechnologies is a synthetic DNA manufacturer headquartered in Emeryville, California, founded in 2017 as a UC Berkeley spinout. Its enzymatic DNA synthesis platform is built on TdT-dNTP conjugates and is sold as a made-to-order laboratory service producing sequence-verified double-stranded DNA fragments up to 600 bp, clonal DNA up to 7.5 kb, and ultra-long clonal constructs up to 50 kb. Quotes and orders are placed through a Salesforce Experience Cloud customer portal.
+
+**No API surface.** Ansa is a wet-lab manufacturer, not a software company. As of 2026-08-06 it publishes no public API, developer portal, SDK, package, GitHub organization, or machine-readable specification. See `x-coverage` in `apis.yml` and `well-known/ansa-biotechnologies-well-known.yml` for the probe record.
+
+- https://ansabio.com/
+- https://portal.ansabio.com/ (customer ordering portal — login required)
